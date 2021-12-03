@@ -19,23 +19,23 @@ public class Sprite extends RectF {
         this.dX=dX;
         this.dY=dY;
         this.color = color;
-
     }
 
     public Sprite(float left, float top, float right, float bottom) {
         this(left, top, right, bottom, 1,2, Color.MAGENTA);
     }
 
-    public Sprite(int dX, int dY, int color) {
-        this(1,1,110,110, dX, dY, color);
+    public Sprite(float left, float top, float right, float bottom, int dX, int dY) {
+        this(left,top,right,bottom, dX, dY, Color.MAGENTA);
     }
 
     public Sprite() {
-        this(2,3,Color.GRAY);
+        this(2, 2, 50, 50,2,3);
     }
 
     public void update() {
         offset(dX, dY);
+        frameX = ++frameX % BM_COLUMNS;
     }
 
     public void draw(Canvas canvas) {
@@ -100,8 +100,8 @@ public class Sprite extends RectF {
         }
         else {
             if(dY == Math.abs(dY))
-                return UP;
-            return DOWN;
+                return DOWN;
+            return UP;
         }
     }
 
