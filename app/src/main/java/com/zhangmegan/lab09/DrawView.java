@@ -18,7 +18,7 @@ public class DrawView extends View {
         super.onLayout(changed, left, top, right, bottom);
         main = BitmapFactory.decodeResource(getResources(), R.drawable.wingedgirl);
         sprite = new Sprite(getWidth()/2-60, this.getHeight()/2-70,
-                getWidth()/2+60, this.getHeight()/2+70, 0, 5);
+                getWidth()/2+60, this.getHeight()/2+70, 0, 10);
         sprite.setBitmapDim(4, 3, 1);
         sprite.setBitmap(main);
     }
