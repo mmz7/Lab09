@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -12,13 +13,14 @@ import androidx.annotation.Nullable;
 
 public class DrawView extends View {
     Sprite sprite = new Sprite();
+    RectF lWall, rWall, tWall, bWall;
     Bitmap main;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         main = BitmapFactory.decodeResource(getResources(), R.drawable.wingedgirl);
-        sprite = new Sprite(getWidth()/2-60, this.getHeight()/2-70,
-                getWidth()/2+60, this.getHeight()/2+70, 0, 10);
+        sprite = new Sprite(getWidth()/2-50, this.getHeight()/2-58,
+                getWidth()/2+50, this.getHeight()/2+58, 0, 10);
         sprite.setBitmapDim(4, 3, 1);
         sprite.setBitmap(main);
     }
@@ -31,6 +33,16 @@ public class DrawView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         sprite.draw(canvas);
+        lWall = new RectF(0, 0, 80, this.getHeight());
+        canvas.drawRect(lWall, new Paint());
+        rWall = new RectF(getWidth()-80, 0, getWidth(), this.getHeight());
+        canvas.drawRect(rWall, new Paint());
+        tWall = new RectF(0, 0, getWidth(), 100);
+        canvas.drawRect(tWall, new Paint());
+        bWall = new RectF(0, this.getHeight()-100, getWidth(),
+                this.getHeight());
+        canvas.drawRect(bWall, new Paint());
+
         invalidate();
     }
 }
