@@ -14,13 +14,14 @@ import androidx.annotation.Nullable;
 public class DrawView extends View {
     Sprite sprite = new Sprite();
     RectF lWall, rWall, tWall, bWall;
+    final int moveNum = 13;
     Bitmap main;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         main = BitmapFactory.decodeResource(getResources(), R.drawable.wingedgirl);
         sprite = new Sprite(getWidth()/2-50, this.getHeight()/2-58,
-                getWidth()/2+50, this.getHeight()/2+58, 0, 10);
+                getWidth()/2+50, this.getHeight()/2+58, 0, moveNum);
         sprite.setBitmapDim(4, 3, 1);
         sprite.setBitmap(main);
     }
@@ -42,6 +43,8 @@ public class DrawView extends View {
         bWall = new RectF(0, this.getHeight()-100, getWidth(),
                 this.getHeight());
         canvas.drawRect(bWall, new Paint());
+
+
 
         invalidate();
     }

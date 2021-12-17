@@ -3,6 +3,7 @@ package com.zhangmegan.lab09;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -95,42 +96,39 @@ public class MainActivity extends AppCompatActivity {
 //        };
 
         listener = new View.OnTouchListener() {
-            Sprite s = drawView.sprite;
             private Handler handler;
             @Override public boolean onTouch(View v, MotionEvent motionEvent) {
-                s.setdY(-10);
-                s.setdX(0);
                 if(v.getId() == R.id.buttonup) {
-                    if(s.getdY() != 0)
-                        s.setdY(-Math.abs(s.getdY()));
+                    if(drawView.sprite.getdY() != 0)
+                        drawView.sprite.setdY(-Math.abs(drawView.sprite.getdY()));
                     else {
-                        s.setdY(-Math.abs(s.getdX()));
-                        s.setdX(0);
+                        drawView.sprite.setdY(-Math.abs(drawView.sprite.getdX()));
+                        drawView.sprite.setdX(0);
                     }
                 }
                 if(v.getId() == R.id.down) {
-                    if(s.getdY() != 0) {
-                        s.setdY(Math.abs(s.getdY()));
+                    if(drawView.sprite.getdY() != 0) {
+                        drawView.sprite.setdY(Math.abs(drawView.sprite.getdY()));
                     }
                     else {
-                        s.setdY(Math.abs(s.getdX()));
-                        s.setdX(0);
+                        drawView.sprite.setdY(Math.abs(drawView.sprite.getdX()));
+                        drawView.sprite.setdX(0);
                     }
                 }
                 if(v.getId() == R.id.right) {
-                    if(s.getdX() != 0)
-                        s.setdX(Math.abs(s.getdX()));
+                    if(drawView.sprite.getdX() != 0)
+                        drawView.sprite.setdX(Math.abs(drawView.sprite.getdX()));
                     else {
-                        s.setdX(Math.abs(s.getdY()));
-                        s.setdY(0);
+                        drawView.sprite.setdX(Math.abs(drawView.sprite.getdY()));
+                        drawView.sprite.setdY(0);
                     }
                 }
                 if(v.getId() == R.id.left) {
-                    if(s.getdX() != 0)
-                        s.setdX(-Math.abs(s.getdX()));
+                    if(drawView.sprite.getdX() != 0)
+                        drawView.sprite.setdX(-Math.abs(drawView.sprite.getdX()));
                     else {
-                        s.setdX(-Math.abs(s.getdY()));
-                        s.setdY(0);
+                        drawView.sprite.setdX(-Math.abs(drawView.sprite.getdY()));
+                        drawView.sprite.setdY(0);
                     }
                 }
                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -151,7 +149,19 @@ public class MainActivity extends AppCompatActivity {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    drawView.sprite.update();
+                    if(RectF.intersects(drawView.sprite, drawView.bWall)) {
+                        drawView.sprite.offset(0, -drawView.moveNum);
+                    }
+                    else if(RectF.intersects(drawView.sprite, drawView.tWall))
+                        drawView.sprite.offset(0, drawView.moveNum);
+                    else if(RectF.intersects(drawView.sprite, drawView.lWall)) {
+                        drawView.sprite.offset(drawView.moveNum, 0);
+                    }
+                    else if(RectF.intersects(drawView.sprite, drawView.rWall))
+                        drawView.sprite.offset(-drawView.moveNum, 0);
+                    else {
+                        drawView.sprite.update();
+                    }
                     handler.postDelayed(this, 100);
                 }
             };
