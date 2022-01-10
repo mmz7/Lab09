@@ -12,10 +12,11 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class DrawView extends View {
-    Sprite sprite = new Sprite();
+    Sprite sprite, monster;
     RectF lWall, rWall, tWall, bWall;
     final int moveNum = 13;
-    Bitmap main;
+    Bitmap main, monsterBm;
+    int slowcount = 0;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -24,6 +25,10 @@ public class DrawView extends View {
                 getWidth()/2+50, this.getHeight()/2+58, 0, moveNum);
         sprite.setBitmapDim(4, 3, 1);
         sprite.setBitmap(main);
+        monsterBm = BitmapFactory.decodeResource(getResources(), R.drawable.monstersprite);
+        monster = new Sprite(80, 100, 180, 216, 0, 10);
+        monster.setBitmapDim(4, 3, 1);
+        monster.setBitmap(monsterBm);
     }
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
@@ -34,6 +39,7 @@ public class DrawView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         sprite.draw(canvas);
+        monster.draw(canvas);
         lWall = new RectF(0, 0, 80, this.getHeight());
         canvas.drawRect(lWall, new Paint());
         rWall = new RectF(getWidth()-80, 0, getWidth(), this.getHeight());
@@ -44,7 +50,14 @@ public class DrawView extends View {
                 this.getHeight());
         canvas.drawRect(bWall, new Paint());
 
-
+        slowcount++;
+        if(slowcount == 10) {
+            monster.update();
+            slowcount = 0;
+        }
+        if(RectF.intersects(monster, tWall) || RectF.intersects(monster, bWall)) {
+            monster.setdY(-monster.getdY());
+        }
 
         invalidate();
     }
