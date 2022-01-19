@@ -2,6 +2,7 @@ package com.zhangmegan.lab09;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -92,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
                         drawView.sprite.offset(-drawView.moveNum, 0);
                     else {
                         drawView.sprite.update();
+                    }
+                    for(int i = 0; i < drawView.mCount; i++) {
+                        if(RectF.intersects(drawView.monsters[i], drawView.sprite)) {
+                            Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                            startActivity(intent);
+                        }
                     }
                     handler.postDelayed(this, 100);
                 }
